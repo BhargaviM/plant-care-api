@@ -14,7 +14,8 @@ const plantSchema = mongoose.Schema({
 
 const plantsCareSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    plant: {type: mongoose.Schema.Types.ObjectId, ref: 'Plant'}, 
+    plant: {type: mongoose.Schema.Types.ObjectId, ref: 'Plant'},
+    month: {type: mongoose.Schema.Types.String, required: true},
     zone: {type: mongoose.Schema.Types.String, required: true},
     care: {type: mongoose.Schema.Types.Mixed, required: true}
 });

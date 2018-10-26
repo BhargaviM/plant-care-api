@@ -6,12 +6,33 @@ const Users = require('../models/users');
 const models = require('../models/plants');
 const Plant = models.Plant;
 const PlantsCare = models.PlantsCare;
-// const PlantsCare = require('../models/plants-care');
+
+/*
+    TODO reuse same code between here and plants-care.js
+    Used partially from 
+    https://medium.com/dailyjs/rewriting-javascript-converting-an-array-of-objects-to-an-object-ec579cafbfc7
+    */
+arrayToObject = (array) =>
+    array.reduce((careByMonth, doc) => {
+        const month = doc.month;
+        if (month in careByMonth) {
+            careByMonth[month].push({
+                plant: doc.plant.name,
+                care: doc.care
+            });
+        } else {
+            careByMonth[month] = [{
+                plant: doc.plant.name,
+                care: doc.care
+            }];
+        }
+        return careByMonth
+    }, {});
 
 /*
     Get a list of plants.
     Req Type: GET
-    URL: /plants
+    URL: /plants/{optional tag}
     Req: -
     Res: [
         {_id: '', name: ''},
@@ -84,31 +105,19 @@ router.post('/', (req, res, next) => {
                 'plant': { $in: req.body.plants },
                 'zone': req.body.zone
             })
-            .select("plant care")
+            .select("plant care month")
             .populate('plant', 'name')
             .exec()
             .then(docs => {
                 console.log(docs);
                 if (docs && docs.length > 0) {
-                    // Get a list of months jan-dec from the first plant care doc
-                    let months = Object.keys(docs[0].care);
-                    
-                    // Initialize plant care by month obj
-                    let careByMonth = {};
-                    months.forEach(month => {
-                        careByMonth[month] = [];
-                    })
+                    // Plant care doc -> organized by month
+                    const careByMonth = arrayToObject(docs);
 
-                    // Re save plant care by month, instead of by plant
-                    docs.forEach(doc => {
-                        months.forEach(month => {
-                            careByMonth[month].push({
-                                plant: doc.plant.name,
-                                care: doc['care'][month]
-                            });
-                        })
-                    });
-
+                    // careByMonth[month].push({
+                    //     plant: doc.plant.name,
+                    //     care: doc['care'][month]
+                    // });
                     res.status('200').json({
                         "message": "Save plant Sucessfull.",
                         "plantsCare": careByMonth
