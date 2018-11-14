@@ -12,7 +12,8 @@ const PlantsCategories = require('./api/routes/plants-categories');
 const Users = require('./api/routes/users');
 
 // Connect to Mongoose
-mongoose.connect('mongodb://node-shop:' + process.env.MONGO_ATLAS_PWD + '@plant-care-shard-00-00-kdwwo.mongodb.net:27017,plant-care-shard-00-01-kdwwo.mongodb.net:27017,plant-care-shard-00-02-kdwwo.mongodb.net:27017/test?ssl=true&replicaSet=plant-care-shard-0&authSource=admin&retryWrites=true',
+// mongoose.connect('mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PWD + '@plant-care-kdwwo.mongodb.net/test?retryWrites=true',
+mongoose.connect('mongodb+srv://node-shop:nodeshop@plant-care-kdwwo.mongodb.net/test?retryWrites=true',
 { 'useNewUrlParser': true });
 mongoose.Promise = global.Promise;
 

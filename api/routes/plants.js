@@ -95,7 +95,10 @@ router.post('/', (req, res, next) => {
         _id: mongoose.Types.ObjectId(),
         plants: req.body.plants,
         zone: req.body.zone,
-        email: req.body.email
+        email: req.body.email,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        full_name: req.body.full_name
     });
     User.save()
         .then(result => {

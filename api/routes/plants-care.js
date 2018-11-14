@@ -55,6 +55,7 @@ router.post('/', (req, res, next) => {
         filterOptions.month = req.body.month;
         selectFields = 'plant care';
     }
+    
     PlantsCare.find(filterOptions)
     .select(selectFields)
     .populate('plant', 'name')

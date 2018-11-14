@@ -19,7 +19,17 @@ router.get('/', (req, res, next) => {
             console.log(docs);
             res.status('200').json({
                 "message": "Get users Sucessfull.",
-                "users": docs
+                "users": docs.map(doc => {
+                    return {
+                        _id: doc._id,
+                        first_name: doc.first_name,
+                        last_name: doc.last_name,
+                        full_name: doc.full_name,
+                        email: doc.email,
+                        zone: doc.zone,
+                        plants: doc.plants
+                    }
+                })
             });
         })
         .catch(err => {
