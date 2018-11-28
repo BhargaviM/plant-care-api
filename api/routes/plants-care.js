@@ -28,8 +28,7 @@ arrayToObject = (array) =>
         return careByMonth
    }, {});
 
-// TODO TEST THIS and then update the send-email.perl
-// Also reuse code between this and POST plants
+// Also Reuse code between this and POST plants
 /*
     Retrieve a list of plants care.
     Req Type: POST
