@@ -8,6 +8,7 @@ const usersSchema = mongoose.Schema({
     email: {type: String},
     zone: {type: String},
     plants: [{type: mongoose.Schema.Types.ObjectId, ref: 'Plant'}],
+    custom_plants: {type: String},
     unsubscribe: {type: Boolean}
 });
 

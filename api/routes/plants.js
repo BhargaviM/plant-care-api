@@ -58,9 +58,9 @@ router.get('/:tag?', (req, res, next) => {
                     "plants": docs
                 });
             } else {
-                console.log('No Plants marching the tag.');
+                console.log('No Plants found.');
                 res.status('200').json({
-                    "message": "No plants matching the requested tag.",
+                    "message": "No plants found.",
                 });
             }
             
@@ -80,20 +80,30 @@ router.get('/:tag?', (req, res, next) => {
     URL: /plants
     Req: {
         plants: ["plant._id", "plant._id,..."],
+        custom_plants: "Speical Rose, Black Tulips"
         zone: "2b",
-        email: "foo@bar.com"
+        email: "foo@bar.com",
+        first_name: "Bhargavi",
+        last_name: "Thaduri",
+        full_name: "Bhargavi Thaduri"
     }
-    Res: [
-        {_id: '', name: ''},
-        {_id: '', name: ''},
-        ...
-    ]
+    Res: {
+        message: "Save plant Sucessfull.",
+        plantsCare: {
+            january: [
+                {plant: "Boxwood", care: ["Don't kill plant Boxwood in zone 1a in april.", "Fertilize it."]}
+                {plant: "Hydrangea", ....}
+            ],
+            febraury: ....
+        }
+    }
 */
 router.post('/', (req, res, next) => {
     // Save the user preferences
     const User = new Users({
         _id: mongoose.Types.ObjectId(),
         plants: req.body.plants,
+        custom_plants: req.body.custom_plants,
         zone: req.body.zone,
         email: req.body.email,
         first_name: req.body.first_name,
