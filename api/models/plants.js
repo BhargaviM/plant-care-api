@@ -21,7 +21,7 @@ const plantsCareSchema = mongoose.Schema({
 });
 
 var Plant = mongoose.model('Plant', plantSchema, 'plants');
-var PlantsCare =  mongoose.model('PlantsCare', plantsCareSchema, 'plantscare');
+var PlantsCare =  mongoose.model('PlantsCare', plantsCareSchema, 'plantsCare');
 
 module.exports = {
     Plant: Plant, 

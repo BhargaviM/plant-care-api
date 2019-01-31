@@ -10,6 +10,7 @@ const PlantsCare = require('./api/routes/plants-care');
 const Zones = require('./api/routes/zones');
 const PlantsCategories = require('./api/routes/plants-categories');
 const Users = require('./api/routes/users');
+const Helps = require('./api/routes/helps');
 
 // Connect to Mongoose
 // mongoose.connect('mongodb+srv://node-shop:' + process.env.MONGO_ATLAS_PWD + '@plant-care-kdwwo.mongodb.net/test?retryWrites=true',
@@ -45,6 +46,7 @@ app.use('/plants-care', PlantsCare);
 app.use('/zones', Zones);
 app.use('/plant-categories', PlantsCategories);
 app.use('/users', Users);
+app.use('/helps', Helps);
 
 // Handle errors
 app.use((req, res, next) => {
