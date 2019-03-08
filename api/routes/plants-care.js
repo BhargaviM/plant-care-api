@@ -100,7 +100,7 @@ router.post('/', (req, res, next) => {
     URL: /plants-care/new
     Req: {
         "plant": "5bc948588e83b73a0d25a771",
-        "month": "Jan",
+        "month": "january",
         "care": ["Don't kill Tulip plant in zone 2b in January.", "Fertilize it."],
         "zone": "2b"
     }

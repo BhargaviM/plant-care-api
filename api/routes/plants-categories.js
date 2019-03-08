@@ -45,44 +45,64 @@ router.get('/', (req, res, next) => {
     Add plant categories.
     Req Type: POST
     URL: /plant-categories
-    Req: {}
+    Req: {
+        "sedum": {
+            "label": "Sedum",
+            "plural": "Sedums"
+            
+        }
+    }
     Res: {
         "message": "Plant Categories Save Sucessfull.",
         "categories": {
-            // TODO
+            {
+            "annual": {
+                "label": "Annual",
+                "plural": "Annuals"
+            },
+            "perennial": {
+                "label": "Pernnial",
+                "plural": "Perennials"
+            },...
         }
     }
  */
 router.post('/', (req, res, next) => {
-    const categories = {
-        'annual': {label: 'Annual', plural: 'Annuals'},
-        'perennial': {label: 'Pernnial', plural: 'Perennials'},
-        'herb': {label: 'Herb', plural: 'Herbs'},
-        'bulb': {label: 'Bulb', plural: 'Bulbs'},
-        'succulent': {label: 'Succulent', plural: 'Succulents'},
-        'vine': {label: 'Vine', plural: 'Vines'},
-        'fern': {label: 'Fern', plural: 'Ferns'},
-        'grass': {label: 'Grass', plural: 'Grasses'},
-        'fruit': {label: 'Fruit', plural: 'Fruits'},
-        'rose': {label: 'Rose', plural: 'Roses'},
-        'shrub': {label: 'Shrub', plural: 'Shrubs'},
-        'tree': {label: 'Trees', plural: 'Trees'},
-        'vegetable': {label: 'Vegetable', plural: 'Vegetables'}
-    }
+    // New category to be saved
+    const newCategory = req.body;
 
-    const PlantCategoriesObj = new PlantCategories({'categories': categories});
-    PlantCategoriesObj.save()
-        .then(result => {
-            console.log(result);
-            res.status('200').json({
-                "message": "Save plant categories sucessfull.",
-                "categories": result
-            });
+    // Find the one categories object and update it.
+    PlantCategories.findOne()
+        .exec()
+        .then(docs => {
+            // Existing Categories
+            let categories = docs.categories;
+            // Extend it
+            const newCategories = {...categories, ...newCategory};
+            // Update it
+            docs.categories = newCategories;
+            // Save
+            docs.save()
+                .then(result => {
+                    console.log(result);
+                    res.status('200').json({
+                        "message": "Save plant categories sucessfull.",
+                        "categories": result
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.status(500).json({
+                        "message": "Save plant categories Failed.",
+                        "error": err
+                    });
+                });
+
         })
         .catch(err => {
             console.log(err);
             res.status(500).json({
-                "message": "Save plant categories Failed.",
+                "message": "Get Plant Categories Failed.",
                 "error": err
             });
         });
