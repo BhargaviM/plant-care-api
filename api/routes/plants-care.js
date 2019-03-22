@@ -101,8 +101,13 @@ router.post('/', (req, res, next) => {
     Req: {
         "plant": "5bc948588e83b73a0d25a771",
         "month": "january",
-        "care": ["Don't kill Tulip plant in zone 2b in January.", "Fertilize it."],
-        "zone": "2b"
+        "care": "Don't kill Tulip plant in zone 2b in January.",
+        "zone": "2b",
+        "fertilizer": {
+            "text": "Now is the time to fertilize. Use a good 10-10-10 fertilizer. Sprinkle the fertilizer away from the roots, around the leaf drip line and cover with soil according to the package instructions.",
+            "link": "https://www.homedepot.com/p/Hyponex-40-lb-All-Purpose-Fertilizer-10-10-10-523902/202968725",
+            "link-text": "Suggested fertilizer"
+        }
     }
     Res: {
         "message": "Save plant care Sucessfull.",
@@ -133,7 +138,8 @@ router.post('/new', (req, res, next) => {
                 plant: req.body.plant,
                 month: req.body.month,
                 zone: req.body.zone,
-                care: req.body.care
+                care: req.body.care,
+                fertilizer: req.body.fertilizer
             };
             const PlantCare = new PlantsCare({
                 _id: mongoose.Types.ObjectId(),

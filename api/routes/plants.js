@@ -12,22 +12,47 @@ const PlantsCare = models.PlantsCare;
     Used partially from 
     https://medium.com/dailyjs/rewriting-javascript-converting-an-array-of-objects-to-an-object-ec579cafbfc7
     */
-arrayToObject = (array) =>
+consolidateCareToByMonth = (array) =>
     array.reduce((careByMonth, doc) => {
         const month = doc.month;
         if (month in careByMonth) {
             careByMonth[month].push({
+                month: month,
                 plant: doc.plant.name,
-                care: doc.care
+                care: doc.care,
+                fertilizer: doc.fertilizer
             });
         } else {
             careByMonth[month] = [{
+                month: month,
                 plant: doc.plant.name,
-                care: doc.care
+                care: doc.care,
+                fertilizer: doc.fertilizer
             }];
         }
         return careByMonth
     }, {});
+
+/*
+    Sort Care by Months Jan - Dec
+*/
+sortCareByMonths = (careObj) => {
+    const months = ["january", "february", "march",
+                    "april", "may", "june",
+                    "july", "august", "september",
+                    "october", "november", "december"];
+    console.log("Months: "+months);
+    console.log("Care OBJ: "+careObj);
+    let sortedCareByMonths = [];                    
+    months.forEach( (month) =>{
+        if (month in careObj) {
+            sortedCareByMonths.push( careObj[month] );
+        }
+    });
+    return sortedCareByMonths;
+    console.log("Sorted Care: ");
+    console.log(sortedCareByMonths)
+}
 
 /*
     Get a list of plants.
@@ -75,7 +100,7 @@ router.get('/:tag?', (req, res, next) => {
 });
 
 /*
-    Save user preferences and get the plant care.
+    Save user preferences and return sample plant care.
     Req Type: POST
     URL: /plants
     Req: {
@@ -118,22 +143,21 @@ router.post('/', (req, res, next) => {
                 'plant': { $in: req.body.plants },
                 'zone': req.body.zone
             })
-            .select("plant care month")
+            .select("plant care month fertilizer")
             .populate('plant', 'name')
             .exec()
             .then(docs => {
                 console.log(docs);
                 if (docs && docs.length > 0) {
                     // Plant care doc -> organized by month
-                    const careByMonth = arrayToObject(docs);
+                    const careByMonth = consolidateCareToByMonth(docs);
+                    const sortedCareByMonth = sortCareByMonths(careByMonth);
+                    console.log("SORTED: **********");
+                    console.log(sortedCareByMonth);
 
-                    // careByMonth[month].push({
-                    //     plant: doc.plant.name,
-                    //     care: doc['care'][month]
-                    // });
                     res.status('200').json({
                         "message": "Save plant Sucessfull.",
-                        "plantsCare": careByMonth
+                        "plantsCare": sortedCareByMonth
                     });
                 } else {
                     console.log("No matching plant care");
@@ -188,6 +212,7 @@ router.post('/new-plant', (req, res, next) => {
         _id: mongoose.Types.ObjectId(),
         ...plantInfo
     });
+    console.log(req);
     PlantToSave.save()
         .then(result => {
             console.log(result);

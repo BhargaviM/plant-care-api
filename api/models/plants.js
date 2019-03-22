@@ -6,6 +6,7 @@ const plantSchema = mongoose.Schema({
     description: {type: String},
     height: {type: String},
     width: {type: String},
+    zones: {type: Array, index: true},
     plantingInstructions: {type: String},
     bloomTime: {type: String},
     tags: {type: Array, index: true},
@@ -17,7 +18,8 @@ const plantsCareSchema = mongoose.Schema({
     plant: {type: mongoose.Schema.Types.ObjectId, ref: 'Plant'},
     month: {type: mongoose.Schema.Types.String, required: true},
     zone: {type: mongoose.Schema.Types.String, required: true},
-    care: {type: mongoose.Schema.Types.Mixed, required: true}
+    care: {type: mongoose.Schema.Types.Mixed},
+    fertilizer: {type: mongoose.Schema.Types.Mixed}
 });
 
 var Plant = mongoose.model('Plant', plantSchema, 'plants');
